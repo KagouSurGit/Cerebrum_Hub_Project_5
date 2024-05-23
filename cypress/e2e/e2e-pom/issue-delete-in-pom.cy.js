@@ -16,10 +16,24 @@ describe('Issue delete', () => {
   const issueTitle = 'This is an issue of type: Task.';
 
   it('Should delete issue successfully', () => {
-    //add steps to delete issue
+    IssueModal.clickDeleteButton();
+    IssueModal.confirmDeletion();
+    cy.reload();
+    IssueModal.ensureIssueIsNotVisibleOnBoard(issueTitle)
   });
 
   it('Should cancel deletion process successfully', () => {
-    //add steps to start deletion proces but cancel it
+    IssueModal.clickDeleteButton();
+    IssueModal.cancelDeletion();
+    IssueModal.closeDetailModal()
+    IssueModal.ensureIssueIsVisibleOnBoard(issueTitle)
   });
 });
+
+/* 
+23-05-2024
+Sprint 1 - Week 2 
+Assignment 4: Cover issue deletion functionality using POM approach
+POM Test Rewriting: Issue Deletion
+POM Test Rewriting: Issue Deletion Cancellation
+*/
