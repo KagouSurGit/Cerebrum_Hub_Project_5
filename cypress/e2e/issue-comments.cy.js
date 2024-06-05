@@ -196,7 +196,7 @@ describe('Issue comments creating, editing and deleting', () => {
         .should('not.contain', updatedComment);
     }
 
-    it.only('Using functions, it should add, update and delete a comment successfully', () => {
+    it('Using functions, it should add, update and delete a comment successfully', () => {
         const comment = "First comment using function"
         const updatedComment = "Second comment updated for other function"
         
