@@ -68,4 +68,67 @@ describe('Issue comments creating, editing and deleting', () => {
             .find('[data-testid="issue-comment"]')
             .should('not.exist');
     });
+
+    it.only('Should add, update and delete a comment successfully', () => {
+        const addComment = 'Adding a proper comment to this comment section';
+        const updateComment = 'Updating previous comment, isn\'t cool ?'
+
+        getIssueDetailsModal().within(() => {
+           // Adding comment
+            cy.contains('Add a comment...')
+                .click();
+
+            cy.get('textarea[placeholder="Add a comment..."]')
+                .type(addComment);
+
+            cy.contains('button', 'Save')
+                .click()
+                .should('not.exist');
+
+            // Assert of added & visible comment
+            cy.contains('Add a comment...')
+                .should('exist');
+
+            cy.get('[data-testid="issue-comment"]')
+                .should('contain', addComment)
+                .and('be.visible');
+
+            // Editing comment
+            cy.get('[data-testid="issue-comment"]')
+                .first()
+                .contains('Edit')
+                .click()
+                .should('not.exist');
+    
+            cy.get('textarea[placeholder="Add a comment..."]')
+                .should('contain', addComment)
+                .clear()
+                .type(updateComment);
+    
+            cy.contains('button', 'Save')
+                .click()
+                .should('not.exist');
+            
+            // Assert the updated comment is visible
+            cy.get('[data-testid="issue-comment"]')
+                .should('contain', updateComment)
+                .and('be.visible'); 
+        });
+            
+        // Delete comment 
+        cy.get('[data-testid="issue-comment"]')
+            .first()
+            .contains('Delete')
+            .click();
+        
+        cy.get('[data-testid="modal:confirm"]')
+            .contains('button', 'Delete comment')
+            .click()
+            .should('not.exist');
+    
+        // Assert deletion
+        cy.get('[data-testid="issue-comment"]')
+            .contains(updateComment)
+            .should('not.exist');
+    });
 });
