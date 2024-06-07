@@ -3,41 +3,30 @@ describe('Time estimation functionality', () => {
         cy.visit('/');
         cy.url().should('eq', `${Cypress.env('baseUrl')}project/board`).then((url) => {
             cy.visit(url + '/board');
-            cy.contains('This is an issue of type: Task.').click();
         });
     });
 
     const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
 
     it('Should add time estimation to issue', () => {
-        getIssueDetailsModal().within(() => {
-            cy.get('[data-testid="icon:stopwatch"]').click()
-        });
 
-        cy.get('[data-testid="modal:tracking"]').within(() => {
+        cy.contains('This is an issue of type: Task.').click();
+
+        getIssueDetailsModal().within(() => {
             cy.get('input[placeholder="Number"]')
             .first()
             .clear()
             .type('10')
-            cy.contains('button', 'Done')
-            .click()
-            .should('not.exist');
-        });
-
-        /* When closing the issue, cypress does not update the value, 
-        without closing it does update the value. When I do it manually, 
-        it does update the value but it takes some time
-
-        getIssueDetailsModal().within(() => {
             cy.get('[data-testid="icon:close"]')
             .first()
             .click()
-        }); 
+        });
 
         cy.contains('This is an issue of type: Task.').click();
-        */ 
 
-        getIssueDetailsModal().should('contain', '10h logged');
+        cy.wait(3000);
+
+        getIssueDetailsModal().should('contain', '10h estimated');
 
         getIssueDetailsModal().within(() => {
             cy.get('[data-testid="icon:close"]')
@@ -46,4 +35,60 @@ describe('Time estimation functionality', () => {
         });
     
     });
+
+    it('Should update time estimation to issue', () => {
+
+        cy.contains('Click on an issue to see what\'s behind it.').click()
+
+        getIssueDetailsModal().within(() => {
+            cy.get('input[placeholder="Number"]')
+            .first()
+            .clear()
+            .type('20')
+            cy.get('[data-testid="icon:close"]')
+            .first()
+            .click()
+        });
+
+        cy.contains('Click on an issue to see what\'s behind it.').click();
+
+        cy.wait(3000);
+
+        getIssueDetailsModal().should('contain', '20h estimated');
+
+        getIssueDetailsModal().within(() => {
+            cy.get('[data-testid="icon:close"]')
+            .first()
+            .click()
+        });
+    
+    });
+
+    it('Should delete time estimation to issue', () => {
+
+        cy.contains('Try dragging issues to different columns to transition their status.').click()
+
+        getIssueDetailsModal().within(() => {
+            cy.get('input[placeholder="Number"]')
+            .first()
+            .clear()
+            cy.get('[data-testid="icon:close"]')
+            .first()
+            .click()
+        });
+
+        cy.contains('Try dragging issues to different columns to transition their status.').click();
+
+        cy.wait(3000);
+
+        getIssueDetailsModal().should('contain', '15h estimated');
+
+        getIssueDetailsModal().within(() => {
+            cy.get('[data-testid="icon:close"]')
+            .first()
+            .click()
+        });        
+
+    });
+
 });
