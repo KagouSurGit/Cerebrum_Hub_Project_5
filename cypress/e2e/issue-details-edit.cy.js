@@ -7,6 +7,7 @@ describe('Issue details editing', () => {
     });
   });
 
+
   it('Should update type, status, assignees, reporter, priority successfully', () => {
     getIssueDetailsModal().within(() => {
       cy.get('[data-testid="select:type"]').click('bottomRight');
@@ -62,4 +63,72 @@ describe('Issue details editing', () => {
   });
 
   const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+
+
+  /*
+  BONUS task : 
+  ASSIGNMENT 3: SOLVE JAVASCRIPT TASKS (BONUS) : 
+  Task 1
+  10/06/2024
+  */
+
+  const expectedLength = 5
+  let arrayPriority = []
+
+  function addFirstValue() {
+
+    cy.get('[data-testid="select:priority"]').within(() => {
+      cy.get('[data-testid="icon:arrow-up"]')
+      .first()
+      arrayPriority.push('High');
+      cy.log('Added value:', 'High');
+      cy.log('Current array length:', arrayPriority.length);
+    });
+    
+  }
+
+  function addAllValues() {
+
+    cy.get('[data-testid="select:priority"]').click()
+      
+      cy.get('[data-select-option-value="5"]')
+      arrayPriority.push('Highest');
+      cy.log('Added value:', 'Highest');
+      cy.log('Current array length:', arrayPriority.length);
+
+      cy.get('[data-select-option-value="3"]')
+      arrayPriority.push('Medium');
+      cy.log('Added value:', 'Medium');
+      cy.log('Current array length:', arrayPriority.length);
+
+      cy.get('[data-select-option-value="2"]')
+      arrayPriority.push('Low');
+      cy.log('Added value:', 'Low');
+      cy.log('Current array length:', arrayPriority.length);
+
+      cy.get('[data-select-option-value="1"]')
+      arrayPriority.push('Lowest');
+      cy.log('Added value:', 'Lowest');
+      cy.log('Current array length:', arrayPriority.length);
+  }
+
+  it.only('Should edit the priority level of issue', () => {
+    cy.get('[data-testid="modal:issue-details"]').within(() => {
+      addFirstValue();
+      addAllValues();
+    });
+
+    cy.get('[data-testid="select:priority"]').should(() => {
+      expect(arrayPriority).to.have.length(expectedLength);
+    }); 
+
+  });
+
+  /*
+  BONUS task : 
+  ASSIGNMENT 3: SOLVE JAVASCRIPT TASKS (BONUS) : 
+  Task 2
+  --/06/2024
+  */
+
 });
