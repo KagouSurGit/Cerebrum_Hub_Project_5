@@ -112,7 +112,7 @@ describe('Issue details editing', () => {
       cy.log('Current array length:', arrayPriority.length);
   }
 
-  it.only('Should edit the priority level of issue', () => {
+  it('Should edit the priority level of issue', () => {
     cy.get('[data-testid="modal:issue-details"]').within(() => {
       addFirstValue();
       addAllValues();
@@ -128,7 +128,17 @@ describe('Issue details editing', () => {
   BONUS task : 
   ASSIGNMENT 3: SOLVE JAVASCRIPT TASKS (BONUS) : 
   Task 2
-  --/06/2024
+  12/06/2024
   */
+
+  it('Should check reporter\'s name has only characters', () => {
+    cy.get('[data-testid="modal:issue-details"]').within(() => {
+      cy.get('[data-testid="select:reporter"]')
+      .invoke('text')
+      .should('match', /^[A-Za-z\s]+$/);
+
+    });
+
+  });
 
 });
