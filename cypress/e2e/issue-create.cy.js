@@ -245,4 +245,49 @@ describe('Issue create', () => {
       cy.get('[data-testid="form-field:title"]').should('contain', 'This field is required');
     });
   });
+
+  /*
+  BONUS task : 
+  ASSIGNMENT 3: SOLVE JAVASCRIPT TASKS (BONUS) : 
+  Task 3
+  12/06/2024
+  */
+
+  it.only('Should check if issue title has no leading nor trailing spaces', () => {
+    const title = '   Hello World!      '
+    const description = 'This is a small description'
+    const trimTitle = title.trim()
+
+    cy.wait(10000);
+
+    cy.get('[data-testid="modal:issue-create"]').within(() => {
+      cy.wait(10000);
+      cy.get('.ql-editor').type(description);
+      cy.get('input[name="title"]').type(title);
+      cy.get('button[type="submit"]').click();
+      cy.wait(20000);
+    });
+
+    cy.wait(20000);
+
+    cy.get('[data-testid="board-list:backlog"]').within(() => {
+      cy.wait(20000);
+      cy.get('[data-testid="list-issue"]')
+      .contains(trimTitle)
+      .click()
+    });
+
+    cy.wait(10000);
+
+    cy.get('[data-testid="modal:issue-details"]').within(() => {
+      cy.wait(10000);
+      cy.get('textarea[placeholder="Short summary"]')
+      .clear()
+      .type(trimTitle);
+      cy.get('[data-testid="icon:close"]')
+      .click()
+    });
+
+  });
+
 });
